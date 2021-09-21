@@ -13,14 +13,11 @@ import org.springframework.context.annotation.ImportResource;
 public class Config {
 
     @Bean
-    FakeDataSource fakeDataSource(
-            @Value("${guru.username}") final String username,
-            @Value("${guru.password}") final String password,
-            @Value("${guru.jdbcurl}") final String jdbcUrl) {
+    FakeDataSource fakeDataSource(final SfgConfiguration configuration) {
         final FakeDataSource fakeDataSource = new FakeDataSource();
-        fakeDataSource.setUsername(username);
-        fakeDataSource.setPassword(password);
-        fakeDataSource.setJdbcUrl(jdbcUrl);
+        fakeDataSource.setUsername(configuration.getUsername());
+        fakeDataSource.setPassword(configuration.getPassword());
+        fakeDataSource.setJdbcUrl(configuration.getJdbcUrl());
         return fakeDataSource;
     }
 

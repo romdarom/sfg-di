@@ -1,5 +1,7 @@
 package com.monfollet.springframework.guru.sfgdi;
 
+import com.monfollet.springframework.guru.sfgdi.config.SfgConfiguration;
+import com.monfollet.springframework.guru.sfgdi.config.SfgConfigurationConstructor;
 import com.monfollet.springframework.guru.sfgdi.controllers.*;
 import com.monfollet.springframework.guru.sfgdi.datasource.FakeDataSource;
 import com.monfollet.springframework.guru.sfgdi.domain.Counter;
@@ -7,9 +9,13 @@ import com.monfollet.springframework.guru.sfgdi.services.PrototypeBean;
 import com.monfollet.springframework.guru.sfgdi.services.SingletonBean;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 
+@ConfigurationPropertiesScan
+// <=> @EnableConfigurationProperties(SfgConfigurationConstructor.class)
 @ComponentScan(basePackages = {"com.monfollet.springframework.guru.other", "com.monfollet.springframework.guru.sfgdi"})
 @SpringBootApplication
 public class SfgDiApplication {
@@ -68,6 +74,19 @@ public class SfgDiApplication {
         System.out.println("username: " + fakeDS.getUsername());
         System.out.println("password: " + fakeDS.getPassword());
         System.out.println("jdbcUrl: " + fakeDS.getJdbcUrl());
+
+        System.out.println("-------- Config props bean");
+        final SfgConfiguration configByPropsBean = (SfgConfiguration) ctx.getBean("sfgConfiguration");
+        System.out.println("username: " + configByPropsBean.getUsername());
+        System.out.println("password: " + configByPropsBean.getPassword());
+        System.out.println("jdbcUrl: " + configByPropsBean.getJdbcUrl());
+
+
+        System.out.println("-------- Config props by constructor bean");
+        final SfgConfigurationConstructor sfgConfigurationConstructor = ctx.getBean(SfgConfigurationConstructor.class);
+        System.out.println("username: " + sfgConfigurationConstructor.getUsername());
+        System.out.println("password: " + sfgConfigurationConstructor.getPassword());
+        System.out.println("jdbcUrl: " + sfgConfigurationConstructor.getJdbcUrl());
     }
 
 }
